@@ -166,17 +166,21 @@ document.addEventListener('DOMContentLoaded', () => {
              const responseBlockIds = connections.get(block.id) || [];
             if (responseBlockIds.length === 0) return;
 
+            const responseBlockIds = connections.get(block.id) || [];
+            if (responseBlockIds.length === 0) return;
+
             for (const responseBlockId of responseBlockIds) {
                 const responseBlock = document.getElementById(responseBlockId);
                 const model = responseBlock.querySelector('.model-select').value;
                 const contentDiv = responseBlock.querySelector('.content');
 
                 contentDiv.innerHTML = '<div class="spinner"></div>';
-
-                // *** КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: URL теперь указывает на нашу функцию ***
+                
                 const encodedPrompt = encodeURIComponent(prompt);
-                const encodedModel = encodeURIComponent(model);
-                const url = `/api/generate?prompt=${encodedPrompt}&model=${encodedModel}`; // ИЗМЕНЕНО!
+                
+                // *** КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: URL с токеном для прямого запроса ***
+                const apiToken = 'wp3Tk2C7coE2UGIm'; // ВАШ ТОКЕН ЗДЕСЬ
+                const url = `https://text.pollinations.ai/${encodedPrompt}?model=${model}&stream=true&token=${apiToken}`;
 
                 const eventSource = new EventSource(url);
                 activeEventSources.get(block.id).push(eventSource);
